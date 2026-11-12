@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asistente de EventHub</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="chat">
+    <header class="header">
+      <div>
+        <h1>EventHub <span id="step" class="badge"></span></h1>
+        <p class="subtitle">Asistente de eventos, entradas y pedidos</p>
+      </div>
+      <button id="new-button" type="button" class="secondary">Nueva conversación</button>
+    </header>
+
+    <div id="messages" class="messages" role="log" aria-live="polite"></div>
+
+    <form id="form" class="form">
+      <label class="visually-hidden" for="message-input">Tu mensaje</label>
+      <input id="message-input" type="text" placeholder="Escribe tu mensaje…" autocomplete="off" maxlength="2000" required autofocus>
+      <button id="send-button" type="submit">Enviar</button>
+    </form>
+  </main>
+</body>
+</html>

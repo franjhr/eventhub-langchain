@@ -1,0 +1,7 @@
+[
+  {"id": "PED-1001", "email": "ana.garcia@example.com", "event_id": "EV-001", "quantity": 2, "total": 74.0, "status": "confirmado", "purchase_date": "2026-11-02"},
+  {"id": "PED-1002", "email": "luis.martin@example.com", "event_id": "EV-005", "quantity": 4, "total": 168.0, "status": "confirmado", "purchase_date": "2026-11-05"},
+  {"id": "PED-1003", "email": "ana.garcia@example.com", "event_id": "EV-013", "quantity": 1, "total": 16.0, "status": "reembolsado", "purchase_date": "2026-10-20"},
+  {"id": "PED-1004", "email": "marta.ruiz@example.com", "event_id": "EV-010", "quantity": 3, "total": 171.0, "status": "pendiente de pago", "purchase_date": "2026-11-10"},
+  {"id": "PED-1005", "email": "pablo.sanz@example.com", "event_id": "EV-016", "quantity": 2, "total": 88.0, "status": "confirmado", "purchase_date": "2026-11-08"}
+]

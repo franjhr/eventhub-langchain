@@ -1,0 +1,18 @@
+[
+  {"id": "EV-001", "name": "Rosalía Tribute Night", "city": "Valencia", "category": "concierto", "date": "2026-12-12", "price": 35.0, "available_tickets": 120},
+  {"id": "EV-002", "name": "Festival Indie del Turia", "city": "Valencia", "category": "concierto", "date": "2027-01-23", "price": 28.5, "available_tickets": 0},
+  {"id": "EV-003", "name": "Jazz en el Palau", "city": "Valencia", "category": "concierto", "date": "2026-12-19", "price": 22.0, "available_tickets": 45},
+  {"id": "EV-004", "name": "Orquesta Sinfónica: Beethoven 9", "city": "Valencia", "category": "concierto", "date": "2027-02-06", "price": 48.0, "available_tickets": 210},
+  {"id": "EV-005", "name": "Valencia CF - Real Betis", "city": "Valencia", "category": "deporte", "date": "2026-12-06", "price": 40.0, "available_tickets": 800},
+  {"id": "EV-006", "name": "Teatro Principal: La Casa de Bernarda Alba", "city": "Valencia", "category": "teatro", "date": "2027-03-05", "price": 18.0, "available_tickets": 60},
+  {"id": "EV-007", "name": "Love of Lesbian en directo", "city": "Madrid", "category": "concierto", "date": "2026-12-04", "price": 39.5, "available_tickets": 15},
+  {"id": "EV-008", "name": "Noche de Monólogos", "city": "Madrid", "category": "comedia", "date": "2026-11-27", "price": 15.0, "available_tickets": 90},
+  {"id": "EV-009", "name": "Madrid Open de Pádel", "city": "Madrid", "category": "deporte", "date": "2027-01-16", "price": 30.0, "available_tickets": 300},
+  {"id": "EV-010", "name": "El Rey León, el musical", "city": "Madrid", "category": "teatro", "date": "2027-01-09", "price": 55.0, "available_tickets": 150},
+  {"id": "EV-011", "name": "Primavera Club", "city": "Barcelona", "category": "concierto", "date": "2026-12-11", "price": 32.0, "available_tickets": 75},
+  {"id": "EV-012", "name": "Barça Femení - Chelsea", "city": "Barcelona", "category": "deporte", "date": "2026-12-15", "price": 25.0, "available_tickets": 500},
+  {"id": "EV-013", "name": "Stand-up en el Raval", "city": "Barcelona", "category": "comedia", "date": "2026-11-20", "price": 14.0, "available_tickets": 0},
+  {"id": "EV-014", "name": "Concierto de Navidad del Orfeó", "city": "Barcelona", "category": "concierto", "date": "2026-12-22", "price": 26.0, "available_tickets": 180},
+  {"id": "EV-015", "name": "Feria del Libro Antiguo", "city": "Sevilla", "category": "feria", "date": "2027-01-30", "price": 5.0, "available_tickets": 1000},
+  {"id": "EV-016", "name": "Noche Flamenca en la Maestranza", "city": "Sevilla", "category": "concierto", "date": "2026-12-18", "price": 42.0, "available_tickets": 8}
+]
