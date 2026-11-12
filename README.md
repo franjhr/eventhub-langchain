@@ -9,7 +9,7 @@ Cada paso tiene su propio README con la explicación, las preguntas de prueba y 
 | Paso | Qué añade | Documentación | Estado |
 |---|---|---|---|
 | **1 · Cadena base** | Cadena LCEL que responde solo a partir de las políticas | **[Ver el paso 1 →](step1/README.md)** | ✅ Hecho |
-| **2 · Memoria** | Memoria de la conversación, aislada por `session_id` | *Pendiente* | ⏳ Pendiente |
+| **2 · Memoria** | Memoria de la conversación, aislada por `session_id` y limitada a los últimos 10 mensajes | **[Ver el paso 2 →](step2/README.md)** | ✅ Hecho |
 | **3 · Herramientas** | Herramientas para consultar eventos y pedidos | *Pendiente* | ⏳ Pendiente |
 
 Para ver qué cambia de un paso al siguiente: `diff -r step1 step2`.
@@ -17,11 +17,13 @@ Para ver qué cambia de un paso al siguiente: `diff -r step1 step2`.
 ## Esquema
 
 ```
-Navegador (web/)  ──►  common/server.py  ──►  stepN/app.py  ──►  cadena LangChain  ──►  OpenAI
-     ▲               POST /chat           respond(question,      prompt | llm | parser
-     │               valida la petición   session_id)
-     └──────────────  {"response": "..."}  ◄────────────────────────────────────────────┘
+Navegador (web/)  ──►  common/server.py  ──►  stepN/app.py  ──►  LangChain  ──►  OpenAI
+     ▲               POST /chat           respond(question,      paso 1: prompt | llm | parser
+     │               valida la petición   session_id)            paso 2: create_agent + memoria
+     └──────────────  {"response": "..."}  ◄──────────────────────────────────────────────┘
 ```
+
+Todos los pasos comparten la misma API y la misma web. Cada paso solo aporta su función `respond(question, session_id)`.
 
 ## Qué hay en cada carpeta
 
@@ -71,3 +73,4 @@ Necesitas Python 3.12 o superior y una clave de la API de OpenAI. Los comandos s
 
 - 2000 caracteres por mensaje y `session_id` de 8 a 64 caracteres, solo letras, números y guiones (`common/server.py`).
 - Si editas `data/policies.md` o el prompt de un paso, reinicia el servidor: se leen al arrancar.
+- Desde el paso 2, la memoria de las conversaciones está en la RAM: se pierde al reiniciar el servidor.
