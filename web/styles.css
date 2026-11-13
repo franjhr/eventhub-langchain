@@ -8,6 +8,17 @@
   --user: #1d4ed8;
   --user-text: #ffffff;
   --error: #b91c1c;
+  /* Tools section (step 3) */
+  --tool-bg: #fafafa;
+  --tool-border: #d4d4d8;
+  --tool-name: #6d28d9;
+  --tool-muted: #52525b;
+  --ok-bg: #dcfce7;
+  --ok-text: #166534;
+  --empty-bg: #fef3c7;
+  --empty-text: #92400e;
+  --bad-bg: #fee2e2;
+  --bad-text: #991b1b;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +29,16 @@
     --border: #3f3f46;
     --bot: #3f3f46;
     --error: #fca5a5;
+    --tool-bg: #27272a;
+    --tool-border: #52525b;
+    --tool-name: #c4b5fd;
+    --tool-muted: #a1a1aa;
+    --ok-bg: #14532d;
+    --ok-text: #bbf7d0;
+    --empty-bg: #78350f;
+    --empty-text: #fde68a;
+    --bad-bg: #7f1d1d;
+    --bad-text: #fecaca;
   }
 }
 
@@ -165,4 +186,177 @@ button.secondary:disabled {
   height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
+}
+
+/* ---------------------------------------------------------------------------
+   Tools used in the turn (step 3): a section above the answer, in the same bubble.
+   --------------------------------------------------------------------------- */
+
+.message.has-tools {
+  width: 92%;
+  max-width: 92%;
+}
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed var(--tool-border);
+  white-space: normal;
+}
+
+.tools-title {
+  margin: 0;
+  color: var(--tool-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tool {
+  border: 1px solid var(--tool-border);
+  border-left: 3px solid var(--tool-name);
+  border-radius: 0.5rem;
+  background: var(--tool-bg);
+  font-size: 0.85rem;
+}
+
+.tool > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.tool > summary::-webkit-details-marker {
+  display: none;
+}
+
+.tool > summary::before {
+  content: "▸";
+  color: var(--tool-muted);
+  transition: transform 0.15s;
+}
+
+.tool[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.tool-call {
+  flex: 1 1 14rem;
+  font: 0.82rem/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.tool-name {
+  color: var(--tool-name);
+  font-weight: 700;
+}
+
+.tool-args {
+  color: var(--tool-muted);
+}
+
+.chip {
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip.ok { background: var(--ok-bg); color: var(--ok-text); }
+.chip.empty { background: var(--empty-bg); color: var(--empty-text); }
+.chip.bad { background: var(--bad-bg); color: var(--bad-text); }
+.chip.neutral { border: 1px solid var(--tool-border); color: var(--tool-muted); }
+
+.tool-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.6rem 0.6rem;
+}
+
+.tool-note {
+  margin: 0;
+  color: var(--tool-muted);
+}
+
+.tool-note.bad {
+  color: var(--bad-text);
+}
+
+.tool-table {
+  overflow-x: auto;
+}
+
+.tool-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.tool-table th {
+  color: var(--tool-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tool-table th,
+.tool-table td {
+  padding: 0.3rem 0.5rem 0.3rem 0;
+  border-bottom: 1px solid var(--tool-border);
+  vertical-align: top;
+}
+
+.tool-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.tool-table .nowrap { white-space: nowrap; }
+.tool-table .number { font-variant-numeric: tabular-nums; }
+.tool-table .sold-out { color: var(--bad-text); font-weight: 600; }
+
+.tool-sheet {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.2rem 0.9rem;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.tool-sheet dt {
+  color: var(--tool-muted);
+}
+
+.tool-sheet dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.tool-raw > summary {
+  width: fit-content;
+  color: var(--tool-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.tool-raw pre {
+  max-height: 14rem;
+  margin: 0.3rem 0 0;
+  padding: 0.5rem;
+  overflow: auto;
+  border-radius: 0.4rem;
+  background: var(--panel);
+  font: 0.75rem/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  white-space: pre;
 }

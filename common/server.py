@@ -1,6 +1,7 @@
 """Web server shared by the three steps: POST /chat, GET /info and the chat page (web/).
 
-Each step only provides its respond(question, session_id) function and its name.
+Each step only provides its respond(question, session_id) function and its name. Step 3
+also returns the tools it used, so the web page can show them above the answer.
 """
 
 import logging
@@ -13,9 +14,6 @@ from pydantic import BaseModel, Field, field_validator
 from common.config import ROOT_DIR
 
 logger = logging.getLogger("eventhub")
-
-Responder = Callable[[str, str], str]
-
 
 class ChatRequest(BaseModel):
     message: str = Field(max_length=2000)
@@ -31,8 +29,22 @@ class ChatRequest(BaseModel):
         return value
 
 
+class ToolCall(BaseModel):
+    """A tool the agent used to answer: its name, its arguments and what it returned."""
+
+    name: str
+    args: dict
+    result: str
+
+
 class ChatResponse(BaseModel):
     response: str
+    # Tools used to answer, in order. Only step 3 has tools: in steps 1 and 2 it is empty.
+    tools: list[ToolCall] = Field(default_factory=list)
+
+
+# Each step's respond(question, session_id): the answer text, or a ChatResponse with tools.
+Responder = Callable[[str, str], str | ChatResponse]
 
 
 def create_app(respond: Responder, step: str) -> FastAPI:
@@ -51,9 +63,11 @@ def create_app(respond: Responder, step: str) -> FastAPI:
             logger.exception("The assistant could not respond")
             raise HTTPException(status_code=503, detail="Asistente no disponible") from error
 
-        if not isinstance(response, str) or not response.strip():
+        if isinstance(response, str):
+            response = ChatResponse(response=response)
+        if not isinstance(response, ChatResponse) or not response.response.strip():
             raise HTTPException(status_code=503, detail="Asistente no disponible")
-        return ChatResponse(response=response)
+        return response
 
     app.mount("/", StaticFiles(directory=ROOT_DIR / "web", html=True), name="web")
     return app
