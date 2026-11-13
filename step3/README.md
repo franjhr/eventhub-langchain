@@ -41,7 +41,7 @@ Pregunta ─► modelo ─► ¿pide una herramienta? ─ no ─► respuesta
 - **Cada cosa en un solo sitio.** Cuándo usar una herramienta y qué necesita va en su docstring; lo que tiene que cumplirse siempre (el email del pedido) va en el código; el prompt solo añade lo que no puede decir ninguno de los dos: qué responder si no hay eventos, no filtrar por «este mes», no dar datos de pedidos que la herramienta no haya devuelto y el formato. Por eso el prompt del paso 3 es el del paso 2 con esas líneas nuevas y sin la parte que mandaba eventos y pedidos al fallback.
 - **La comprobación del email está en el código, no en el prompt.** `get_order` no devuelve nada del pedido si el email no coincide. Además, un email incorrecto y un pedido que no existe dan el mismo error, así que nadie puede averiguar qué números de pedido existen probando. El docstring pide los dos datos antes de llamar a la herramienta, y el prompt prohíbe dar datos de pedidos que la herramienta no haya devuelto.
 - **Las comparaciones toleran cómo escribe el cliente.** Mayúsculas, tildes y espacios no importan: «valencia», «Concierto» o «ped-1001» funcionan.
-- **Las herramientas leen los JSON en cada llamada.** Si cambian los datos, no hace falta reiniciar el servidor (se aprovechará en el paso extra de reservas).
+- **Las herramientas leen los JSON en cada llamada.** Si cambian los datos, no hace falta reiniciar el servidor. El [paso extra](../step4_extra/README.md) lo aprovecha: las reservas que escribe se ven en la siguiente búsqueda.
 - **La cadena del paso 1 ya es un agente.** Desde el paso 2 el asistente se montaba con `create_agent`, así que aquí solo se añade `tools=[search_events, get_order]`. Las políticas siguen en el prompt de sistema: el modelo no necesita una herramienta para leerlas.
 
 ### El recorte conserva turnos enteros
@@ -108,5 +108,5 @@ Vídeo: [`demo/step3_2_limits.mp4`](../demo/step3_2_limits.mp4)
 - Sin fecha de hoy, el asistente no puede filtrar por «este mes» ni decir cuántos días faltan para un evento. Se podría añadir la fecha al prompt en cada llamada.
 - Comparar precios lo hace el modelo, no el código. En una de las diez veces que se probó «¿y el más barato de esos?», respondió Festival Indie del Turia (28,50 €) en lugar de Jazz en el Palau (22,00 €). Para que no dependa del modelo, `search_events` podría devolver los eventos ordenados por precio o aceptar un precio máximo.
 - `search_events` devuelve todos los eventos que cumplen los filtros. Con un catálogo grande habría que paginar o limitar el número de resultados.
-- Las herramientas solo leen: no se reserva ni se cancela nada. La reserva (`reserve_tickets`) queda para un paso extra.
+- Las herramientas solo leen: no se reserva ni se cancela nada. La reserva (`reserve_tickets`) se añade en el [paso extra](../step4_extra/README.md).
 - La memoria y sus límites son los del [paso 2](../step2/README.md#límites).

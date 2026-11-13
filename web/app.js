@@ -84,14 +84,17 @@ function formatArguments(args) {
 }
 
 // Short label next to the call: what came back, at a glance.
-function resultChip(data) {
+function resultChip(name, data) {
   if (data && Array.isArray(data.events)) {
     const count = data.events.length;
     return count === 0
       ? { text: "0 eventos", tone: "empty" }
       : { text: `${count} evento${count === 1 ? "" : "s"}`, tone: "ok" };
   }
-  if (data && typeof data.error === "string") return { text: "Sin coincidencia", tone: "bad" };
+  if (data && typeof data.error === "string") {
+    // Extra step: a reservation that fails is not a missing match, it was refused.
+    return { text: name === "reserve_tickets" ? "No reservado" : "Sin coincidencia", tone: "bad" };
+  }
   if (data && typeof data.status === "string") return { text: `Pedido ${data.status}`, tone: "ok" };
   return { text: "Resultado", tone: "neutral" };
 }
@@ -130,7 +133,7 @@ function orderSheet(order) {
     ["Fecha del evento", formatDate(order.event_date)],
     ["Entradas", order.quantity],
     ["Total", formatPrice(order.total)],
-    ["Comprado el", formatDate(order.purchase_date)],
+    [order.status === "reservado" ? "Reservado el" : "Comprado el", formatDate(order.purchase_date)],
   ];
   for (const [label, value] of rows) {
     sheet.append(element("dt", "", label), element("dd", "", String(value ?? "—")));
@@ -162,7 +165,7 @@ function resultView(result, data) {
 
 function toolBlock(tool) {
   const data = parseResult(tool.result);
-  const chip = resultChip(data);
+  const chip = resultChip(tool.name, data);
 
   const block = element("details", "tool");
   const summary = element("summary");

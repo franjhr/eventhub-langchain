@@ -1,6 +1,6 @@
 # Asistente de EventHub con LangChain
 
-Asistente de atención al cliente de EventHub, una plataforma de venta de entradas para eventos. Se construye con LangChain en tres pasos, y cada paso se puede ejecutar y revisar por separado.
+Asistente de atención al cliente de EventHub, una plataforma de venta de entradas para eventos. Se construye con LangChain en tres pasos más un paso extra opcional, y cada paso se puede ejecutar y revisar por separado.
 
 ## Pasos
 
@@ -11,8 +11,9 @@ Cada paso tiene su propio README con la explicación, las preguntas de prueba y 
 | **1 · Cadena base** | Cadena LCEL que responde solo a partir de las políticas | **[Ver el paso 1 →](step1/README.md)** | ✅ Hecho |
 | **2 · Memoria** | Memoria de la conversación, aislada por `session_id` y limitada a los últimos 10 mensajes | **[Ver el paso 2 →](step2/README.md)** | ✅ Hecho |
 | **3 · Herramientas** | Herramientas `search_events` y `get_order`: el modelo decide cuándo consultar eventos y pedidos | **[Ver el paso 3 →](step3/README.md)** | ✅ Hecho |
+| **Extra · Reservas** | Herramienta `reserve_tickets`: reserva entradas tras pedir confirmación y crea un pedido | **[Ver el paso extra →](step4_extra/README.md)** | ✅ Hecho |
 
-Para ver qué cambia de un paso al siguiente: `diff -r step1 step2` o `diff -r step2 step3`.
+Para ver qué cambia de un paso al siguiente: `diff -r step1 step2`, `diff -r step2 step3` o `diff -r step3 step4_extra`.
 
 ## Esquema
 
@@ -21,6 +22,7 @@ Navegador (web/)  ──►  common/server.py  ──►  stepN/app.py  ──�
      ▲               POST /chat           respond(question,      paso 1: prompt | llm | parser
      │               valida la petición   session_id)            paso 2: create_agent + memoria
      │                                                            paso 3: + herramientas
+     │                                                            extra:  + reserve_tickets
      └──────────────  {"response": "..."}  ◄──────────────────────────────────────────────┘
 ```
 
@@ -28,13 +30,13 @@ Todos los pasos comparten la misma API y la misma web. Cada paso solo aporta su 
 
 ## Qué hay en cada carpeta
 
-- `step1/`, `step2/`, `step3/`: el código de cada paso y su README.
-- `common/`: lo que comparten los tres pasos.
+- `step1/`, `step2/`, `step3/`, `step4_extra/`: el código de cada paso y su README.
+- `common/`: lo que comparten los pasos.
   - `config.py`: lee la clave y el modelo del `.env`.
-  - `data.py`: carga los ficheros de `data/`.
+  - `data.py`: carga los ficheros de `data/` (o de la copia de trabajo del paso extra).
   - `server.py`: aplicación FastAPI con `POST /chat`, `GET /info` y la web.
-- `data/`: datos de EventHub: `policies.md`, `events.json` y `orders.json`.
-- `web/`: página del chat (HTML, CSS y JavaScript). Muestra qué paso está corriendo y, en el paso 3, las herramientas que usa el agente en cada respuesta.
+- `data/`: datos de EventHub: `policies.md`, `events.json` y `orders.json`. El paso extra escribe las reservas en una copia, `data/runtime/`, que no se sube a git.
+- `web/`: página del chat (HTML, CSS y JavaScript). Muestra qué paso está corriendo y, desde el paso 3, las herramientas que usa el agente en cada respuesta.
 - `demo/`: vídeos de las pruebas de cada paso.
 
 ## Cómo ejecutarlo
@@ -54,7 +56,7 @@ Necesitas Python 3.12 o superior y una clave de la API de OpenAI. Los comandos s
    cp .env.example .env
    ```
 
-3. Arranca el paso que quieras probar (`step1`, `step2` o `step3`):
+3. Arranca el paso que quieras probar (`step1`, `step2`, `step3` o `step4_extra`, en los puertos 8001 a 8004):
 
    ```bash
    .venv/bin/uvicorn step1.app:app --port 8001
